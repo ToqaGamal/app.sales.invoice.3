@@ -40,12 +40,12 @@ public class CtrlAction1 implements ActionListener, ListSelectionListener {
         String actionCommand = e.getActionCommand();
         System.out.println("Action: " + actionCommand);
         switch (actionCommand) {
-            case "Load File":
-                loadFile();
-                break;
-            case "Save":
-                saveFile();
-                break;
+            //case "Load File":
+             //   loadFile();
+              //  break;
+           // case "Save File":
+             //   saveFile();
+               // break;
             case "Create New Invoice":
                 createNewInvoice();
                 break;
@@ -89,103 +89,112 @@ public class CtrlAction1 implements ActionListener, ListSelectionListener {
         }
     }
 
-    private void loadFile() {
-        JFileChooser fc = new JFileChooser();
-        try {
-            int result = fc.showOpenDialog(frame);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                File headerFile = fc.getSelectedFile();
-                Path headerPath = Paths.get(headerFile.getAbsolutePath());
-                List<String> headerLines = Files.readAllLines(headerPath);
-                System.out.println("Invoices have been read");
-                // 1,22-11-2020,Ali
-                // 2,13-10-2021,Saleh
-                // 3,09-01-2019,Ibrahim
-                ArrayList<HDR> invoicesArray = new ArrayList<>();
-                for (String headerLine : headerLines) {
-                    String[] headerParts = headerLine.split(",");
-                    int invoiceNum = Integer.parseInt(headerParts[0]);
-                    String invoiceDate = headerParts[1];
-                    String customerName = headerParts[2];
-
-                    HDR invoice = new HDR(invoiceNum, invoiceDate, customerName);
-                    invoicesArray.add(invoice);
-                }
-                System.out.println("Check point");
-                result = fc.showOpenDialog(frame);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File lineFile = fc.getSelectedFile();
-                    Path linePath = Paths.get(lineFile.getAbsolutePath());
-                    List<String> lineLines = Files.readAllLines(linePath);
-                    System.out.println("Lines have been read");
-                    for (String lineLine : lineLines) {
-                        String lineParts[] = lineLine.split(",");
-                        int invoiceNum = Integer.parseInt(lineParts[0]);
-                        String itemName = lineParts[1];
-                        double itemPrice = Double.parseDouble(lineParts[2]);
-                        int count = Integer.parseInt(lineParts[3]);
-                        HDR inv = null;
-                        for (HDR invoice : invoicesArray) {
-                            if (invoice.getNum() == invoiceNum) {
-                                inv = invoice;
-                                break;
-                            }
-                        }
-
-                        ITM line = new ITM(itemName, itemPrice, count, inv);
-                        inv.getLines().add(line);
-                    }
-                    System.out.println("Check point");
-                }
-                frame.setInvoices(invoicesArray);
-                InvTabel invoicesTableModel = new InvTabel(invoicesArray);
-                frame.setInvoicesTableModel(invoicesTableModel);
-                frame.getInvoiceTable().setModel(invoicesTableModel);
-                frame.getInvoicesTableModel().fireTableDataChanged();
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    private void saveFile() {
-        ArrayList<HDR> invoices = frame.getInvoices();
-        String headers = "";
-        String lines = "";
-        for (HDR invoice : invoices) {
-            String invCSV = invoice.getAsCSV();
-            headers += invCSV;
-            headers += "\n";
-
-            for (ITM line : invoice.getLines()) {
-                String lineCSV = line.getAsCSV();
-                lines += lineCSV;
-                lines += "\n";
-            }
-        }
-        System.out.println("Check point");
-        try {
-            JFileChooser fc = new JFileChooser();
-            int result = fc.showSaveDialog(frame);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                File headerFile = fc.getSelectedFile();
-                FileWriter hfw = new FileWriter(headerFile);
-                hfw.write(headers);
-                hfw.flush();
-                hfw.close();
-                result = fc.showSaveDialog(frame);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File lineFile = fc.getSelectedFile();
-                    FileWriter lfw = new FileWriter(lineFile);
-                    lfw.write(lines);
-                    lfw.flush();
-                    lfw.close();
-                }
-            }
-        } catch (Exception ex) {
-
-        }
-    }
+//    private void loadFile() {
+//        JFileChooser fc = new JFileChooser();
+//        try {
+//            int result = fc.showOpenDialog(frame);
+//            if (result == JFileChooser.APPROVE_OPTION) {
+//                File headerFile = fc.getSelectedFile();
+//                Path headerPath = Paths.get(headerFile.getAbsolutePath());
+//                List<String> headerLines = Files.readAllLines(headerPath);
+//                System.out.println("Invoices have been read");
+//                
+//                ArrayList<HDR> invoicesArray = new ArrayList<>();
+//                for (String headerLine : headerLines) {
+//                    try {
+//                    String[] headerParts = headerLine.split(",");
+//                    int invoiceNum = Integer.parseInt(headerParts[0]);
+//                    String invoiceDate = headerParts[1];
+//                    String customerName = headerParts[2];
+//
+//                    HDR invoice = new HDR(invoiceNum, invoiceDate, customerName);
+//                    invoicesArray.add(invoice);
+//                    } catch (Exception ex) {
+//                        ex.printStackTrace();
+//                        JOptionPane.showMessageDialog(frame, "Wrong file format", "ERROR", JOptionPane.ERROR_MESSAGE);
+//                    }
+//                }
+//                System.out.println("Check point");
+//                result = fc.showOpenDialog(frame);
+//                if (result == JFileChooser.APPROVE_OPTION) {
+//                    File lineFile = fc.getSelectedFile();
+//                    Path linePath = Paths.get(lineFile.getAbsolutePath());
+//                    List<String> lineLines = Files.readAllLines(linePath);
+//                    System.out.println("Lines have been read");
+//                    for (String lineLine : lineLines) {
+//                        try {
+//                        String lineParts[] = lineLine.split(",");
+//                        int invoiceNum = Integer.parseInt(lineParts[0]);
+//                        String itemName = lineParts[1];
+//                        double itemPrice = Double.parseDouble(lineParts[2]);
+//                        int count = Integer.parseInt(lineParts[3]);
+//                        HDR inv = null;
+//                        for (HDR invoice : invoicesArray) {
+//                            if (invoice.getNum() == invoiceNum) {
+//                                inv = invoice;
+//                                break;
+//                            }
+//                        }
+//
+//                        ITM line = new ITM(itemName, itemPrice, count, inv);
+//                        inv.getLines().add(line);
+//                        } catch (Exception ex) {
+//                            ex.printStackTrace();
+//                        JOptionPane.showMessageDialog(frame, "Wrong file format", "ERROR", JOptionPane.ERROR_MESSAGE);
+//                        }
+//                    }
+//                    System.out.println("Check point");
+//                }
+//                frame.setInvoices(invoicesArray);
+//                InvTabel invoicesTableModel = new InvTabel(invoicesArray);
+//                frame.setInvoicesTableModel(invoicesTableModel);
+//                frame.getInvoiceTable().setModel(invoicesTableModel);
+//                frame.getInvoicesTableModel().fireTableDataChanged();
+//            }
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//            JOptionPane.showMessageDialog(frame, "Cannot read file", "ERROR", JOptionPane.ERROR_MESSAGE);
+//        }
+//    }
+//
+//    private void saveFile() {
+//        ArrayList<HDR> invoices = frame.getInvoices();
+//        String headers = "";
+//        String lines = "";
+//        for (HDR invoice : invoices) {
+//            String invCSV = invoice.getAsCSV();
+//            headers += invCSV;
+//            headers += "\n";
+//
+//            for (ITM line : invoice.getLines()) {
+//                String lineCSV = line.getAsCSV();
+//                lines += lineCSV;
+//                lines += "\n";
+//            }
+//        }
+//        System.out.println("Check point");
+//        try {
+//            JFileChooser fc = new JFileChooser();
+//            int result = fc.showSaveDialog(frame);
+//            if (result == JFileChooser.APPROVE_OPTION) {
+//                File headerFile = fc.getSelectedFile();
+//                FileWriter hfw = new FileWriter(headerFile);
+//                hfw.write(headers);
+//                hfw.flush();
+//                hfw.close();
+//                result = fc.showSaveDialog(frame);
+//                if (result == JFileChooser.APPROVE_OPTION) {
+//                    File lineFile = fc.getSelectedFile();
+//                    FileWriter lfw = new FileWriter(lineFile);
+//                    lfw.write(lines);
+//                    lfw.flush();
+//                    lfw.close();
+//                }
+//            }
+//        } catch (Exception ex) {
+//
+//        }
+//    }
 
     private void createNewInvoice() {
         invoiceDialog = new InvDialog(frame);

@@ -6,6 +6,7 @@
 package View;
 
 import Ctrl.CtrlAction1;
+import Model.FileOperations;
 import Model.HDR;
 import Model.InvTabel;
 import java.util.ArrayList;
@@ -59,9 +60,9 @@ public class Frame1 extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         loadFileMenuItem = new javax.swing.JMenuItem();
-        loadFileMenuItem.addActionListener(controller);
+        loadFileMenuItem.addActionListener(controller2);
         saveFileMenuItem = new javax.swing.JMenuItem();
-        saveFileMenuItem.addActionListener(controller);
+        saveFileMenuItem.addActionListener(controller2);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -254,6 +255,7 @@ public class Frame1 extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     private ArrayList<HDR> invoices;
     private CtrlAction1 controller = new CtrlAction1(this);
+    private FileOperations controller2 = new FileOperations (this);
     private InvTabel invoicesTableModel;
 
     public ArrayList<HDR> getInvoices() {
